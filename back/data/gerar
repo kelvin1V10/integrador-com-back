@@ -1,0 +1,137 @@
+import pandas as pd
+import os
+
+# Criando dados de exemplo para as ferramentas caseiras
+data = {
+    "tituloProduto": [
+        "Furadeira Elétrica", "Parafusadeira", "Serra Circular", "Lixadeira", "Martelo",
+        "Alicate", "Chave de Fenda", "Serra Tico-Tico", "Furadeira de Impacto", "Plaina",
+        "Trena", "Nível a Laser", "Broca para Madeira", "Broca para Metal", "Serra de Arco",
+        "Cortador de Grama", "Escada Dobrável", "Chave Inglesa", "Furadeira de Coluna",
+        "Parafuso de Madeira", "Parafuso Metálico", "Tico-Tico Elétrico", "Cortadora de Azulejos",
+        "Lima", "Serra Sabre", "Bico de Luz", "Aspirador de Pó", "Mala de Ferramentas",
+        "Guilhotina", "Bomba de Vácuo", "Estilete", "Chave Allen", "Rosqueadeira",
+        "Saca-rolhas", "Desempenadeira", "Rebitador", "Estante de Ferramentas",
+        "Cinta Métrica", "Mecanismo de Fechadura", "Pistola de Cola Quente",
+        "Régua de Alumínio", "Cortador de Papel", "Caixa de Ferramentas", "Martelo de Borracha",
+        "Parafuso", "Prego", "Serra de Madeira", "Corta Cabos"
+    ],
+    "preco": [
+        150, 100, 200, 75, 50, 25, 30, 250, 300, 90,
+        15, 45, 20, 20, 60, 80, 70, 120, 90, 350,
+        5, 10, 120, 100, 35, 45, 40, 55, 120, 200,
+        90, 70, 85, 100, 60, 75, 90, 130, 150, 95,
+        15, 25, 30, 35, 15, 20, 100, 45
+    ],
+    "descricao": [
+        "Furadeira elétrica com mandril de 13mm e 600W de potência.",
+        "Parafusadeira portátil ideal para montagem de móveis.",
+        "Serra circular com lâmina de 7 polegadas, ideal para cortes precisos.",
+        "Lixadeira orbital para acabamentos em madeira.",
+        "Martelo de borracha com cabo ergonômico.",
+        "Alicate universal de 8 polegadas.",
+        "Chave de fenda com cabo antideslizante.",
+        "Serra tico-tico com velocidade variável.",
+        "Furadeira de impacto com 800W e 2 velocidades.",
+        "Plaina elétrica com largura de 82mm.",
+        "Trena de 5 metros com mecanismo de retorno rápido.",
+        "Nível a laser com alcance de 20 metros.",
+        "Broca para madeira, 5 peças.",
+        "Broca para metal, 5 peças.",
+        "Serra de arco com lâmina de 12 polegadas.",
+        "Cortador de grama manual, leve e fácil de usar.",
+        "Escada dobrável em alumínio, 3 degraus.",
+        "Chave inglesa ajustável de 12 polegadas.",
+        "Furadeira de coluna com velocidade variável.",
+        "Parafuso de madeira, 50 peças.",
+        "Parafuso metálico, 50 peças.",
+        "Tico-tico elétrico com lâmina de reposição.",
+        "Cortadora de azulejos, ideal para reformas.",
+        "Lima de metal, 6 polegadas.",
+        "Serra sabre com lâminas intercambiáveis.",
+        "Bico de luz LED com baixo consumo.",
+        "Aspirador de pó portátil, ideal para limpeza rápida.",
+        "Mala de ferramentas com 150 peças.",
+        "Guilhotina manual para papel e cartolina.",
+        "Bomba de vácuo para uso doméstico.",
+        "Estilete com lâminas de reposição.",
+        "Chave Allen em conjunto, 10 peças.",
+        "Rosqueadeira para tubos de PVC.",
+        "Saca-rolhas manual com cortador de lacre.",
+        "Desempenadeira de aço inox.",
+        "Rebitador manual para chapas de metal.",
+        "Estante de ferramentas em metal, 3 prateleiras.",
+        "Cinta métrica de 10 metros com clipe para bolso.",
+        "Mecanismo de fechadura de alta segurança.",
+        "Pistola de cola quente com 20 bastões inclusos.",
+        "Régua de alumínio, 1 metro.",
+        "Cortador de papel com lâmina afiada.",
+        "Caixa de ferramentas com divisórias.",
+        "Martelo de borracha, ideal para montagem de móveis.",
+        "Parafuso em aço, 100 peças.",
+        "Prego em aço, 100 peças.",
+        "Serra de madeira com lâmina de 18 polegadas.",
+        "Corta Cabos."
+    ],
+    "imgProduto": [
+        f"c:\\images\\{titulo}.jpg" for titulo in [
+            "Furadeira Elétrica", "Parafusadeira", "Serra Circular", "Lixadeira", "Martelo",
+            "Alicate", "Chave de Fenda", "Serra Tico-Tico", "Furadeira de Impacto", "Plaina",
+            "Trena", "Nível a Laser", "Broca para Madeira", "Broca para Metal", "Serra de Arco",
+            "Cortador de Grama", "Escada Dobrável", "Chave Inglesa", "Furadeira de Coluna",
+            "Parafuso de Madeira", "Parafuso Metálico", "Tico-Tico Elétrico", "Cortadora de Azulejos",
+            "Lima", "Serra Sabre", "Bico de Luz", "Aspirador de Pó", "Mala de Ferramentas",
+            "Guilhotina", "Bomba de Vácuo", "Estilete", "Chave Allen", "Rosqueadeira",
+            "Saca-rolhas", "Desempenadeira", "Rebitador", "Estante de Ferramentas",
+            "Cinta Métrica", "Mecanismo de Fechadura", "Pistola de Cola Quente",
+            "Régua de Alumínio", "Cortador de Papel", "Caixa de Ferramentas", "Martelo de Borracha",
+            "Parafuso", "Prego", "Serra de Madeira", "Corta Cabos"
+        ]
+    ],
+    "catProduto": [
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Elétricas", "Ferramentas Elétricas",
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Elétricas",
+        "Ferramentas Elétricas", "Ferramentas Elétricas", "Ferramentas Manuais", "Ferramentas Manuais",
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Elétricas",
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Elétricas", "Ferramentas Elétricas",
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Elétricas", "Ferramentas Elétricas",
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Elétricas", "Ferramentas Elétricas",
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Manuais",
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Elétricas",
+        "Ferramentas Elétricas", "Ferramentas Elétricas", "Ferramentas Elétricas", "Ferramentas Manuais",
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Manuais",
+        "Ferramentas Manuais", "Ferramentas Manuais", "Ferramentas Elétricas", "Ferramentas Elétricas"
+    ],
+    "classProduto": [
+        "Novo", "Novo", "Novo", "Novo", "Novo",
+        "Novo", "Novo", "Novo", "Novo", "Novo",
+        "Novo", "Novo", "Novo", "Novo", "Novo",
+        "Novo", "Novo", "Novo", "Novo", "Novo",
+        "Novo", "Novo", "Novo", "Novo", "Novo",
+        "Novo", "Novo", "Novo", "Novo", "Novo",
+        "Novo", "Novo", "Novo", "Novo", "Novo",
+        "Novo", "Novo", "Novo", "Novo", "Novo",
+        "Novo", "Novo", "Novo", "Novo", "Novo",
+        "Novo", "Novo", "Novo"
+    ],
+    "exibirHome": [
+        True, True, True, True, True,
+        True, True, True, True, True,
+        True, True, True, True, True,
+        True, True, True, True, True,
+        True, True, True, True, True,
+        True, True, True, True, True,
+        True, True, True, True, True,
+        True, True, True, True, True,
+        True, True, True, True, True,
+        True, True, True
+    ]
+}
+
+df = pd.DataFrame(data)
+
+
+caminho_atual = os.getcwd()
+c = caminho_atual.replace("\\", "/")
+
+df.to_csv(c+"/data/ferramentas.csv", index=False)

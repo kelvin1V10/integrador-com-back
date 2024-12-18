@@ -1,0 +1,43 @@
+
+.section-product-grid {
+    padding-top: 1.125em;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: start;
+    justify-items: center;
+    column-gap: 16px;
+    row-gap: 16px;
+    overflow-y: scroll;
+    height: 1000px;
+   
+}
+
+.products-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    column-gap: 16px;
+    padding-bottom: 50px;
+}
+
+.filter {
+    padding-top: 1.125em;;
+}
+
+.filter h3 {
+    font-size: 1.2em;
+    font-weight: 700;
+    padding: 0.5em 0;
+}
+
+.filter ul {
+    list-style: none;
+}
+
+.filter li {
+    padding-bottom: 5px;
+}
+
+.filter input[type="checkbox"] {
+    margin-right: 8px;;
+}
+

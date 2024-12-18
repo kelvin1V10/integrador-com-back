@@ -1,0 +1,24 @@
+import pandas as pd
+import sqlite3
+import os
+
+print(f"Banco de dados utilizado: {os.path.abspath('db.sqlite3')}")
+
+conn = sqlite3.connect('back/db.sqlite3')
+
+caminho_atual = os.getcwd()
+c = caminho_atual.replace("\\", "/")
+
+df = pd.read_csv(c+"/back/data/ferramentas.csv")
+
+df.columns = [
+    'tituloProduto', 'preco', 'descricao', 'imgProduto', 
+    'catProduto', 'classProduto', 'exibirHome'
+]
+
+df.to_sql('api_produto', conn, if_exists='append', index=False)
+conn.commit()
+
+conn.close()
+
+print("Dados inseridos com sucesso na tabela api_produto.")
